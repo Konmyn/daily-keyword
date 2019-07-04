@@ -6,20 +6,20 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 
 
 class KeyForm(forms.Form):
-    primary_key = forms.CharField(label='primary_key', max_length=8, widget=forms.TextInput(attrs={'placeholder': 'key'}))
-    primary_remark = forms.CharField(label='primary_remark', max_length=32, required=False, widget=forms.TextInput(attrs={'placeholder': 'remark'}))
+    primary_key = forms.CharField(label='primary_key', max_length=16, widget=forms.TextInput(attrs={'placeholder': 'key'}))
+    primary_remark = forms.CharField(label='primary_remark', max_length=64, required=False, widget=forms.TextInput(attrs={'placeholder': 'remark'}))
 
-    secondary_key = forms.CharField(label='secondary_key', max_length=8, required=False, widget=forms.TextInput(attrs={'placeholder': 'key'}))
-    secondary_remark = forms.CharField(label='secondary_remark', max_length=32, required=False, widget=forms.TextInput(attrs={'placeholder': 'remark'}))
+    secondary_key = forms.CharField(label='secondary_key', max_length=16, required=False, widget=forms.TextInput(attrs={'placeholder': 'key'}))
+    secondary_remark = forms.CharField(label='secondary_remark', max_length=64, required=False, widget=forms.TextInput(attrs={'placeholder': 'remark'}))
 
-    ternary_key = forms.CharField(label='ternary_key', max_length=8, required=False, widget=forms.TextInput(attrs={'placeholder': 'key'}))
-    ternary_remark = forms.CharField(label='ternary_remark', max_length=32, required=False, widget=forms.TextInput(attrs={'placeholder': 'remark'}))
+    ternary_key = forms.CharField(label='ternary_key', max_length=16, required=False, widget=forms.TextInput(attrs={'placeholder': 'key'}))
+    ternary_remark = forms.CharField(label='ternary_remark', max_length=64, required=False, widget=forms.TextInput(attrs={'placeholder': 'remark'}))
 
-    quartus_key = forms.CharField(label='quartus_key', max_length=8, required=False, widget=forms.TextInput(attrs={'placeholder': 'key'}))
-    quartus_remark = forms.CharField(label='quartus_remark', max_length=32, required=False, widget=forms.TextInput(attrs={'placeholder': 'remark'}))
+    quartus_key = forms.CharField(label='quartus_key', max_length=16, required=False, widget=forms.TextInput(attrs={'placeholder': 'key'}))
+    quartus_remark = forms.CharField(label='quartus_remark', max_length=64, required=False, widget=forms.TextInput(attrs={'placeholder': 'remark'}))
 
-    fifth_key = forms.CharField(label='fifth_key', max_length=8, required=False, widget=forms.TextInput(attrs={'placeholder': 'key'}))
-    fifth_remark = forms.CharField(label='fifth_remark', max_length=32, required=False, widget=forms.TextInput(attrs={'placeholder': 'remark'}))
+    fifth_key = forms.CharField(label='fifth_key', max_length=16, required=False, widget=forms.TextInput(attrs={'placeholder': 'key'}))
+    fifth_remark = forms.CharField(label='fifth_remark', max_length=64, required=False, widget=forms.TextInput(attrs={'placeholder': 'remark'}))
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop("request", None)

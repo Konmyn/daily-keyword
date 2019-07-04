@@ -27,7 +27,9 @@ def keyin(request):
         if form.is_valid():
             # print(form.cleaned_data)
             # print(type(form.cleaned_data)) # dict
-            df = pd.DataFrame(form.cleaned_data, index=[datetime.now().strftime("%Y-%m-%d")])
+            df = pd.read_csv("key_info.csv", index_col=0, dtype=str)
+            new = pd.DataFrame(form.cleaned_data, index=[datetime.now().strftime("%Y-%m-%d")])
+            df = df.append(new)
             df.to_csv("key_info.csv")
             return HttpResponseRedirect(reverse("info"))
 
