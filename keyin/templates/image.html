@@ -1,0 +1,26 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+div.gallery {
+  margin: 30px;
+}
+
+div.gallery img {
+  width: 100%;
+  height: auto;
+}
+</style>
+</head>
+<body>
+
+<div class="gallery">
+  <a href="{% url 'start'%}">
+    <img src="{{ image_data }}" alt="word cloud">
+  </a>
+</div>
+
+</body>
+</html>
