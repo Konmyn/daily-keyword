@@ -10,7 +10,6 @@
     <meta name="description" content="The most popular HTML, CSS, and JS library in Metro style.">
     <meta name="keywords" content="HTML, CSS, JS, Metro, CSS3, Javascript, HTML5, UI, Library, Web, Development, Framework">
 
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="{% static "favicon.ico" %}" type="image/x-icon">
 
     <link href="{% static "css/metro-all.css" %}?ver=@@b-version" rel="stylesheet">
@@ -39,6 +38,12 @@
                 </a>
                 <a href="{% url 'start'%}" data-role="tile" class="bg-orange fg-white" data-size="wide">
                     <span class="branding-bar">start page/this page</span>
+                </a>
+                <a href="{% url 'login'%}" data-role="tile" class="bg-emerald fg-white">
+                    <span class="branding-bar">login</span>
+                </a>
+                <a href="{% url 'logout'%}" data-role="tile" class="bg-red fg-white">
+                    <span class="branding-bar">logout</span>
                 </a>
             </div>
 

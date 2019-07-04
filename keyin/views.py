@@ -3,6 +3,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 import pandas as pd
 from datetime import datetime
 from collections import defaultdict
+from django.contrib.auth import authenticate, login, logout
+from django.urls import reverse
+
+import io
+import base64
 
 from .forms import KeyForm
 from .helper import get_word_cloud_by_freq
@@ -10,6 +15,7 @@ from .helper import get_word_cloud_by_freq
 
 # 每日关键词输入
 def keyin(request):
+    print(request.user)
     # print(request.build_absolute_uri())  # http://localhost:8000/inputf/
     # print(request.META['PATH_INFO'])  # /inputf/
     # print(reverse("input-simple"))
@@ -23,13 +29,13 @@ def keyin(request):
             # print(type(form.cleaned_data)) # dict
             df = pd.DataFrame(form.cleaned_data, index=[datetime.now().strftime("%Y-%m-%d")])
             df.to_csv("key_info.csv")
-            return HttpResponseRedirect('/info/')
+            return HttpResponseRedirect(reverse("info"))
 
     # if a GET (or any other method) we'll create a blank form
     else:
         df = pd.read_csv("key_info.csv", index_col=0, dtype=str)
         if datetime.now().strftime("%Y-%m-%d") in df.index:
-            return HttpResponseRedirect('/info/')
+            return HttpResponseRedirect(reverse("info"))
         # print(df.loc["2019-07-02"])
         # print(df.info())
         form = KeyForm(request=request)
@@ -39,14 +45,14 @@ def keyin(request):
 
 # 关键词综合信息展示
 def info(request):
+    print(request.user)
     df = pd.read_csv("key_info.csv", index_col=0, dtype=str)
     return HttpResponse(df.to_html())
 
-import io
-import base64
 
 # 关键词词云
 def cloud(request):
+    print(request.user)
     df = pd.read_csv("key_info.csv", index_col=0, dtype=str)
     freq = defaultdict(int)
     for index, row in df.iterrows():
@@ -66,9 +72,10 @@ def cloud(request):
     # print(dir(image))
     # image.show()  # can work
     # response = HttpResponse(content_type="image/png")
+    # image.save(response, "PNG")
+    # return response
     cio = io.BytesIO()
     image.save(cio, "PNG")
-    # return response
     bdata = base64.b64encode(cio.getvalue()).decode("ascii")
     image_data = "data:image/png;base64,{}".format(bdata)
     return render(request, 'image.html', {"image_data": image_data})
@@ -76,4 +83,26 @@ def cloud(request):
 
 # 起始页面
 def start(request):
+    print(request.user)
     return render(request, 'start.html')
+
+
+# 登录页面
+def userlogin(request):
+    print(request.user)
+    if not request.user.is_anonymous:
+        return HttpResponseRedirect(reverse("start"))
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse("start"))
+    return render(request, 'login.html')
+
+
+# 登录页面
+def userlogout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("start"))
