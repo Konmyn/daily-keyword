@@ -45,11 +45,42 @@ def keyin(request):
     return render(request, 'keyin.html', {'form': form})
 
 
+th_props = [
+  # ('font-size', '11px'),
+  ('text-align', 'center'),
+  ('font-weight', 'bold'),
+  ('color', '#6d6d6d'),
+  ('background-color', '#f7f7f9')
+  ]
+
+# Set CSS properties for td elements in dataframe
+td_props = [
+  # ('font-size', '11px')
+  ]
+
+# Set table styles
+styles = [
+  dict(selector="th", props=th_props),
+  dict(selector="td", props=td_props)
+  ]
+
+
 # 关键词综合信息展示
 def info(request):
     print(request.user)
     df = pd.read_csv("key_info.csv", index_col=0, dtype=str)
-    return HttpResponse(df.to_html())
+    if request.META['PATH_INFO'] == reverse("info"):
+        df = df.drop(columns=["primary_remark", "secondary_remark", "ternary_remark", "quartus_remark", "fifth_remark"]).iloc[::-1]
+    # https://pandas.pydata.org/pandas-docs/stable/user_guide/style.html
+    html = (
+        df.style
+        # .set_properties(**{'font-size': '16px', 'font-family': 'Calibri'})
+        .set_caption('all history data.')
+        .highlight_null(null_color="gray")
+        .set_table_styles(styles)
+        .render()
+    )
+    return HttpResponse(html)
 
 
 # 关键词词云

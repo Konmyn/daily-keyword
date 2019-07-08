@@ -9,5 +9,6 @@ urlpatterns = [
     path('input/', views.keyin, name='input-simple'),
     path('inputf/', views.keyin, name='input-full'),
     path('info/', views.info, name='info'),
+    path('infof/', views.info, name='infof'),
     path('cloud/', views.cloud, name='cloud'),
 ]

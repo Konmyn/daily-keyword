@@ -1,13 +1,19 @@
 #!/usr/bin/env python
 
 from wordcloud import WordCloud
+import numpy as np
+
+# https://amueller.github.io/word_cloud/auto_examples/index.html#example-gallery
+x, y = np.ogrid[:300, :300]
+mask = (x - 150) ** 2 + (y - 150) ** 2 > 130 ** 2
+mask = 255 * mask.astype(int)
 
 
 def get_word_cloud_by_freq(freq):
     # apt install fonts-wqy-microhei
     font = "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc"
     # Generate a word cloud image
-    wc = WordCloud(font_path=font)
+    wc = WordCloud(background_color="white",  mask=mask, font_path=font)
     return wc.generate_from_frequencies(freq)
 
 
