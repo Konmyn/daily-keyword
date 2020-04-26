@@ -115,6 +115,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+FONT = os.path.join(BASE_DIR, "data/font/wqy-microhei.ttc")
+
+DATA_DIR = os.path.join(BASE_DIR, "data/user")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

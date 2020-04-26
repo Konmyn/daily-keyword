@@ -10,7 +10,7 @@ import io
 import base64
 
 from .forms import KeyForm
-from .helper import get_word_cloud_by_freq
+from .helper import get_word_cloud_by_freq, get_data_path
 
 
 # 每日关键词输入
@@ -27,15 +27,15 @@ def keyin(request):
         if form.is_valid():
             # print(form.cleaned_data)
             # print(type(form.cleaned_data)) # dict
-            df = pd.read_csv("key_info.csv", index_col=0, dtype=str)
+            df = pd.read_csv(get_data_path(), index_col=0, dtype=str)
             new = pd.DataFrame(form.cleaned_data, index=[datetime.now().strftime("%Y-%m-%d")])
             df = df.append(new)
-            df.to_csv("key_info.csv")
+            df.to_csv(get_data_path())
             return HttpResponseRedirect(reverse("info"))
 
     # if a GET (or any other method) we'll create a blank form
     else:
-        df = pd.read_csv("key_info.csv", index_col=0, dtype=str)
+        df = pd.read_csv(get_data_path(), index_col=0, dtype=str)
         if datetime.now().strftime("%Y-%m-%d") in df.index:
             return HttpResponseRedirect(reverse("info"))
         # print(df.loc["2019-07-02"])
@@ -68,7 +68,7 @@ styles = [
 # 关键词综合信息展示
 def info(request):
     print(request.user)
-    df = pd.read_csv("key_info.csv", index_col=0, dtype=str)
+    df = pd.read_csv(get_data_path(), index_col=0, dtype=str)
     if request.META['PATH_INFO'] == reverse("info"):
         df = df.drop(columns=["primary_remark", "secondary_remark", "ternary_remark", "quartus_remark", "fifth_remark"]).iloc[::-1]
     # https://pandas.pydata.org/pandas-docs/stable/user_guide/style.html
@@ -86,7 +86,7 @@ def info(request):
 # 关键词词云
 def cloud(request):
     print(request.user)
-    df = pd.read_csv("key_info.csv", index_col=0, dtype=str)
+    df = pd.read_csv(get_data_path(), index_col=0, dtype=str)
     freq = defaultdict(int)
     for index, row in df.iterrows():
         if row["primary_key"]:

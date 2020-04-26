@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 from wordcloud import WordCloud
+import os
 import numpy as np
+from django.conf import settings
 
 # https://amueller.github.io/word_cloud/auto_examples/index.html#example-gallery
 x, y = np.ogrid[:300, :300]
@@ -11,10 +13,22 @@ mask = 255 * mask.astype(int)
 
 def get_word_cloud_by_freq(freq):
     # apt install fonts-wqy-microhei
-    font = "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc"
+    font = settings.FONT
     # Generate a word cloud image
-    wc = WordCloud(background_color="white",  mask=mask, font_path=font)
+    wc = WordCloud(
+        background_color="white",
+        # mask=mask,
+        font_path=font,
+        width=2000, height=900,
+        margin=2,
+    )
     return wc.generate_from_frequencies(freq)
+
+
+def get_data_path(user=None):
+    file_name = "key_info.csv"
+    file_path = os.path.join(settings.DATA_DIR, file_name)
+    return file_path
 
 
 if __name__ == "__main__":
